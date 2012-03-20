@@ -1,11 +1,58 @@
-// PRUSA Mendel  
-// Functions used in many files
-// GNU GPL v3
-// Josef Průša
-// josefprusa@me.com
-// prusadjs.cz
-// http://www.reprap.org/wiki/Prusa_Mendel
-// http://github.com/prusajr/PrusaMendel
+//---------------------------------------------------
+//-- Auxiliary functions
+//---------------------------------------------------
+// (c) Juan Gonzalez Gomez (juan@iearobotics.com)
+// Credits:
+//-- Some files have been taken from the Prusa Mendel:
+//   Josef Průša, josefprusa@me.com
+//---------------------------------------------------
+
+
+//----------------------------------
+//-- RoundedBox. Parameters:
+//--  size = [x,y,z],
+//--  r = corner radius
+//----------------------------------
+module roundedBox(size, r)
+{
+  hull() {
+   cube([size[0]-2*r,size[1]-2*r,size[2]],center=true);
+
+   translate([size[0]/2-r,-size[1]/2+r,0])
+   cylinder(r=r,h=size[2],$fn=20,center=true);
+
+   translate([size[0]/2-r,size[1]/2-r,0])
+   cylinder(r=r,h=size[2],$fn=20,center=true);
+
+   translate([-size[0]/2+r,-size[1]/2+r,0])
+   cylinder(r=r,h=size[2],$fn=20,center=true);
+
+   translate([-size[0]/2+r,size[1]/2-r,0])
+   cylinder(r=r,h=size[2],$fn=20,center=true);
+
+  }
+}
+
+//------------------------------------------
+// A box with only 2 rounded corners. Parameters:
+//--  size = [x,y,z],
+//--  r = corner radius
+//------------------------------------------
+module rounded_box_half(size, r) 
+{
+
+  hull() {
+    translate([r,0,0])
+      cube(size = [size[0]-r,size[1],size[2]]);
+
+    translate([r,r,0])
+      cylinder(r=r,h=size[2],$fn=20);
+
+    translate([r,size[1]-r,0])
+      cylinder(r=r,h=size[2],$fn=20);
+  } 
+}
+
 
 
 module nut(d,h,horizontal=true)
