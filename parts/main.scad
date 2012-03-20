@@ -1,43 +1,23 @@
-//-- Miniskybot 2
-
+//--------------------------------------------------------------------------
+// Miniskybot 2.0
+// (c) Juan Gonzalez-Gomez, March-2012
+// Robotics and Cybernetics group. Universidad Politecnica de Madrid
+//--------------------------------------------------------------------------
+//-- CREDITS:
+//--  The ball caster have been designed by Sliptonic
+//   http://www.thingiverse.com/thing:13782
+//--------------------------------------------------------------------------
+// This code is under the GPL license
+//--------------------------------------------------------------------------
 include <configuration.scad>
 include <functions.scad>
-include <battery_holder.scad>
+use <battery_holder.scad>
 include <Servo-wheel.scad>
-
-
-//-- Servo futaba 3003 dimensions
-servo_c1 = 20;
-servo_c2 = 7.5;
-servo_c3 = 26.4;
-servo_c4 = 40.3;
-servo_c5 = 30.3;
-servo_c6 = 10;
-servo_c7 = 11.6;
-servo_c8 = 4.1;
-servo_c9 = 5.2;
-servo_c10 = 9.6;
-
-battery_top_gap = 1;  //-- Real battery height whith batteries inserted
-battery_height = battery_c3 + battery_top_gap;
-
-//-- Rear part parameters
-rear_c1 = servo_c2 + 3;
-rear_c2 = servo_c3*2;
-rear_c3 = servo_c1 + battery_height -3;
-rear_edge_rad = 3;
 
 //-- wheels params
 wheels_diam = 56;
 wheel_height = 6;
 wheel_gap = 1;
-
-//-- Nut
-nut_h = 2.6;
-nut_radius = 6.6/2;
-
-//-- drills
-drill_M3 = 3.2;
 
 //-- Ball caster parameters
   //user adjustable parameters
@@ -65,27 +45,13 @@ top_plate_thickness = 4;
 front_thickness = 3;
 
 
+//-- Printing mode
+printing_mode = false;
+
 //-- Visualization flags
-show_servos = false;
-show_battery = false;
+show_servos = true;
+show_battery = true;
 show_wheels = false;
-
-
-// A box with only 2 rounded corners
-module rounded_box_half(x,y,z, r) 
-{
-
-  hull() {
-    translate([r,0,0])
-      cube(size = [x-r,y,z]);
-
-    translate([r,r,0])
-      cylinder(r=r,h=z,$fn=20);
-
-    translate([r,y-r,0])
-      cylinder(r=r,h=z,$fn=20);
-  } 
-}
 
 module captive_nut(l=nut_radius)
 {
@@ -109,7 +75,7 @@ module rear_part_body()
 
     //-- Main part
     translate([-rear_c1,0,servo_c1-rear_c3])
-    rounded_box_half(rear_c1,rear_c2,rear_c3,r=rear_edge_rad);
+    rounded_box_half([rear_c1,rear_c2,rear_c3],r=rear_edge_rad);
 
     //-- Bottom drills for the battery holder
     translate([-battery_ear_diam/2, (rear_c2-battery_c2)/2+battery_ear_diam/2,
@@ -188,26 +154,24 @@ module rear_part()
   ball_caster_height = total_height-(BallSize*BallProtrude);
 
   //-- top_plate_thickness
-  translate([0,0,top_plate_thickness])
+  //translate([0,0,top_plate_thickness])
   difference() {
     union() {
       rear_part_body();
-      translate([-cylrad,rear_c2/2,-ball_caster_height +servo_c1])
+      translate([-cylrad,rear_c2/2,-ball_caster_height +servo_c1+top_plate_thickness])
       cylinder(r=cylrad, h=ball_caster_height);
     }
-   translate([-cylrad,rear_c2/2,-cyl_height/2 + (BallSize/2)])
+   translate([-cylrad,rear_c2/2,-cyl_height/2 + (BallSize/2)+top_plate_thickness])
       cube([cylrad/2, cylrad*2+5, BallSize*1.25],center=true);
     
-   translate([-cylrad,rear_c2/2,-cyl_height/2 + (BallSize/2)]) 
+   translate([-cylrad,rear_c2/2,-cyl_height/2 + (BallSize/2)+top_plate_thickness]) 
       #sphere (BallSize/2+Airgap, $fa=5, $fs=0.1);
 
    translate([-rear_c1-8,rear_c2/2,servo_c3+5])
-  rotate (a = [0,20,0])
-  cube ([20,23,80],center=true);
+   rotate (a = [0,20,0])
+   cube ([20,23,80],center=true);
 
   }
-
-  
 
 }
 
@@ -225,7 +189,7 @@ module front_part(l=0)
       translate([battery_c1+l,0,-battery_height+3])
       translate([battery_ear_diam,rear_c2,0])
       rotate([0,0,180])
-      rounded_box_half(battery_ear_diam+l, rear_c2, rear_c3,r=rear_edge_rad);
+      rounded_box_half([battery_ear_diam+l, rear_c2, rear_c3],r=rear_edge_rad);
     }
     translate([battery_c1-front_thickness,battery_ear_diam-(battery_c2-rear_c2)/2,
                -rear_c3+servo_c1-5])
@@ -285,26 +249,6 @@ module front_part(l=0)
               servo_c1-rear_c3+1])
     cylinder(r=drill_M3/2,h=0.4, $fn=10);
     
-}
-
-module roundedBox(size, r)
-{
-  hull() {
-   cube([size[0]-2*r,size[1]-2*r,size[2]],center=true);
-
-   translate([size[0]/2-r,-size[1]/2+r,0])
-   cylinder(r=r,h=size[2],$fn=20,center=true);
-
-   translate([size[0]/2-r,size[1]/2-r,0])
-   cylinder(r=r,h=size[2],$fn=20,center=true);
-
-   translate([-size[0]/2+r,-size[1]/2+r,0])
-   cylinder(r=r,h=size[2],$fn=20,center=true);
-
-   translate([-size[0]/2+r,size[1]/2-r,0])
-   cylinder(r=r,h=size[2],$fn=20,center=true);
-
-  }
 }
 
 module skymega()
@@ -384,51 +328,62 @@ module miniskybot_frame(l=0)
   union() {
     top_plate_skymega(l);
     front_part(l);
+
+    //projection(cut=false)
+    //rotate([90,0,0])
+    //rotate([0,0,90])
     rear_part();
   }
 }
 
-rotate([0,180,0])           //-- this is for printing...
-translate([0,0,-servo_c1-top_plate_thickness])
-miniskybot_frame();
+module show_robot()
+{
+  miniskybot_frame();
 
+  //-- Servos
+  if (show_servos) {
+    //-- Right servo
+    color([0.2,0.2,0.2])
+    translate([servo_c4/2,servo_c3,servo_c1/2])
+    rotate([90,0,0])
+    import("futaba3003/futaba.stl");
 
-//-- Front part
-//rotate([0,180,0])           //-- this is for printing...
-//translate([0,0,-servo_c1])
-*front_part(l=0);
+    //-- Left servo
+    color([0.2,0.2,0.2])
+    translate([servo_c4/2,servo_c3+0.1,servo_c1/2])
+    rotate([-90,0,0])
+    import("futaba3003/futaba.stl");
+  }
 
-//rotate([0,180,0])           //-- this is for printing...
-//translate([0,0,-servo_c1])
-*rear_part();
+  //-- Battery holder
+  if (show_battery) {
+    translate([battery_c1/2,rear_c2/2,-battery_c3/2-battery_top_gap])
+    color("blue") battery();
+  }
 
+  //-- Wheels
+  if (show_wheels) {
+    color("green")
+    translate([servo_c5,-servo_c7-wheel_height/2-wheel_gap,servo_c6])
+    rotate([90,0,0])
+    Servo_wheel();
 
-//-- Battery holder
-if (show_battery) {
-  translate([battery_c1/2,rear_c2/2,-battery_c3/2-battery_top_gap])
-  color("blue") battery();
+    color("green")
+    translate([servo_c5,wheel_height/2+2*servo_c3+servo_c7+wheel_gap,servo_c6])
+    rotate([90,0,0])
+    Servo_wheel();
+  }
+
 }
 
-//-- Wheels
-if (show_wheels) {
-  color("grey")
-  translate([servo_c5,-servo_c7-wheel_height/2-wheel_gap,servo_c6])
-  rotate([90,0,0])
-  Servo_wheel();
+if (printing_mode) {
+  //-- Rotate and translate the frame so that is is printable
+  rotate([0,180,0]) 
+  translate([0,0,-servo_c1-top_plate_thickness])
+  miniskybot_frame();
+}
+else {
+  show_robot();
 }
 
-//-- Servos
-if (show_servos) {
-  //-- Right servo
-  color([0.2,0.2,0.2])
-  translate([servo_c4/2,servo_c3,servo_c1/2])
-  rotate([90,0,0])
-  import("futaba3003/futaba.stl");
-
-  //-- Left servo
-  color([0.2,0.2,0.2])
-  translate([servo_c4/2,servo_c3+0.1,servo_c1/2])
-  rotate([-90,0,0])
-  import("futaba3003/futaba.stl");
-}
 
