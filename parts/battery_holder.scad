@@ -1,38 +1,18 @@
+//---------------------------------------------------------
+//-- Battery holder for Miniskybot 2. It is based on
+//-- the parameterized batery_holder of Miniskybot 1, but
+//-- with 4 "ears" for screwing to the chassis
+//---------------------------------------------------------
+include <configuration.scad>
 use <Parameterized_battery_holder.scad>
 
-battery_c1 = 49;
-battery_c2 = 51.5;
-battery_c3 = 12;
-battery_ear_diam = 9;
-battery_ear_h = 3;
-
-module battery()
-{
-
-  ear_diam = 9;
-  ear_h = 3;
-
-  union() {
-
-    battery_holder(size=0,num=4);
-
-    translate([-battery_c1/2,-battery_c2/2,-battery_c3/2])
-      ear(do=battery_ear_diam, drill=3.1, h=battery_ear_h);
-
-    translate([-battery_c1/2, battery_c2/2-battery_ear_diam,-battery_c3/2])
-      ear(do=battery_ear_diam, drill=3.1, h=battery_ear_h);
-
-    translate([battery_c1/2, battery_c2/2-battery_ear_diam,-battery_c3/2])
-    mirror([1,0,0])
-    ear(do=battery_ear_diam, drill=3.1, h=battery_ear_h);
-
-    translate([battery_c1/2, -battery_c2/2,-battery_c3/2])
-    mirror([1,0,0])
-    ear(do=battery_ear_diam, drill=3.1, h=battery_ear_h);
-  }
-}
-
-module ear(do=6, drill=3, h=3)
+//-------------------------------
+//-- Battery holder ears
+//-- Parameters:
+//--   do: outer diameter
+//--   h : ear height
+//-------------------------------
+module ear(do, h)
 {
   translate([-do/2,do/2,0])
   difference() {
@@ -42,11 +22,39 @@ module ear(do=6, drill=3, h=3)
       translate([do/4,0,h/2])
       cube([do/2,do,h],center=true);
     }
-    cylinder(r=drill/2, h=h+10,$fn=20,center=true);
+    cylinder(r=drill_M3/2, h=h+10,$fn=20,center=true);
   }
 }
 
-*translate([0,0,battery_c3/2])
+//-------------------------------
+//--- Battery holder
+//-------------------------------
+module battery()
+{
+  union() {
+
+    //-- Main part: a battery holder for 4 AAA batteries
+    battery_holder(size=0,num=4);
+
+    //-- Add the 4 ears
+    translate([-battery_c1/2,-battery_c2/2,-battery_c3/2])
+      ear(do=battery_ear_diam, h=battery_ear_h);
+
+    translate([-battery_c1/2, battery_c2/2-battery_ear_diam,-battery_c3/2])
+      ear(do=battery_ear_diam, h=battery_ear_h);
+
+    translate([battery_c1/2, battery_c2/2-battery_ear_diam,-battery_c3/2])
+    mirror([1,0,0])
+    ear(do=battery_ear_diam,  h=battery_ear_h);
+
+    translate([battery_c1/2, -battery_c2/2,-battery_c3/2])
+    mirror([1,0,0])
+    ear(do=battery_ear_diam,  h=battery_ear_h);
+  }
+}
+
+//-- This is for testing/printing the battery holder
+translate([0,0,battery_c3/2])
 battery();
 
 
