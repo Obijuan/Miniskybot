@@ -30,7 +30,22 @@ module polyhole(d,h)
         cylinder(h = h, r = (d / 2) / cos (180 / n), $fn = n);
 }
 
+module teardrop(r,h)
+{
+  $fa=15.0;
+  $fs=0.1;
 
+  diameter=2*r;
+
+  linear_extrude(height=h, center=false, convexity=10)
+  difference() {
+    union() {
+      circle(r=diameter/2);
+      rotate(45) square(size=diameter/2,center=false);
+    }
+    translate([-diameter/2,diameter/2]) square(size=diameter);
+  }
+}
 
 module roundcorner(diameter)
 {
@@ -40,3 +55,8 @@ module roundcorner(diameter)
       cylinder(h = 100, r=diameter, center=true);
   }
 }
+
+
+
+
+
