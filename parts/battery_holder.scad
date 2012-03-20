@@ -22,7 +22,7 @@ module ear(do, h)
       translate([do/4,0,h/2])
       cube([do/2,do,h],center=true);
     }
-    cylinder(r=drill_M3/2, h=h+10,$fn=20,center=true);
+    cylinder(r=drill_M3/2, h=h+10,$fn=8,center=true);
   }
 }
 

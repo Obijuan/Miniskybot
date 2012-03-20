@@ -14,6 +14,7 @@ Other contributors:
 GPL LICENCE
 ****************************************************************/
 include <configuration.scad>
+use <functions.scad>
 
 /***************************************************/
 /* Battery holder. Parameters                      */
@@ -86,7 +87,7 @@ module battery_holder(size=0, num=4)
            cube(size=[l,w,h],center=true);
 
         rotate([0,90,0])
-          #cylinder(r=w/2, h=l-0.01, center=true, $fn=50); 
+          cylinder(r=w/2, h=l-0.01, center=true, $fn=50); 
       }
     }
 
@@ -96,7 +97,8 @@ module battery_holder(size=0, num=4)
       //-- Drills
       translate([0,i*(w+distance_bat),0])
       rotate([0,90,0])
-      cylinder(center=true,h=l+20, r=drill_M3/2, $fn=50, center=true);
+      rotate([0,0,45/2])
+      cylinder(center=true,h=l+20, r=drill_M3/2, $fn=8);
 
       //-- Room for the embedded nuts
       translate([0,i*(w+distance_bat),0])

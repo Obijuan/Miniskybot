@@ -19,6 +19,9 @@ battery_c2 = 51.5;
 battery_c3 = 12;
 battery_ear_diam = 9;
 battery_ear_h = 3;
+battery_top_gap = 1;  
+//-- Real battery height whith batteries inserted
+battery_height = battery_c3 + battery_top_gap;
 
 //------------------------------------------------
 //-- Servo parameters
