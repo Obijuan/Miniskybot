@@ -7,7 +7,6 @@
 //   Josef Průša, josefprusa@me.com
 //---------------------------------------------------
 
-
 //----------------------------------
 //-- RoundedBox. Parameters:
 //--  size = [x,y,z],
@@ -52,6 +51,19 @@ module rounded_box_half(size, r)
       cylinder(r=r,h=size[2],$fn=20);
   } 
 }
+
+//-------------------------------------
+//-- Function for the captive nuts
+//-------------------------------------
+module captive_nut(l=nut_radius)
+{
+  union() {
+    rotate([0,0,30])
+    cylinder(r=nut_radius,h=nut_h,$fn=6,center=true);
+    translate([-l/2,0,0]) cube([l,2*nut_radius,nut_h],center=true);
+  }
+}
+
 
 
 

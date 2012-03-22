@@ -38,7 +38,6 @@ battery_top_gap = 1;
 //-- Real battery height whith batteries inserted
 battery_height = battery_c3 + battery_top_gap;
 
-
 //----------------------------------
 //-- Rear part parameters
 //-- See the doc/rear-doc.dxf file
@@ -47,6 +46,23 @@ rear_c1 = servo_c2 + 3;
 rear_c2 = servo_c3*2;
 rear_c3 = servo_c1 + battery_height -battery_ear_h;
 rear_edge_rad = 3;
+
+//-- Ball caster parameters
+WallThickness = 2.25; //thickness of the retaining wall
+BallSize = 16.4;  //diameter of  your ball bearing.
+Airgap = .65;  // Gap between ball and wall  
+BallProtrude = .35; //percentage of ball radius sticking out 
+WheelDiameter = 56;  //what size wheels you will use.
+
+//-- Wheels parameters
+wheels_diam = 56;
+wheel_height = 6;
+wheel_gap = 1;
+
+//-- ultrasounds
+ultrasound_hole = 16.5;
+
+
 
 
 

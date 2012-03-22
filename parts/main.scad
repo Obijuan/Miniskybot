@@ -12,26 +12,13 @@
 include <configuration.scad>
 include <functions.scad>
 use <battery_holder.scad>
-include <Servo-wheel.scad>
+use <Servo-wheel.scad>
 
-//-- wheels params
-wheels_diam = 56;
-wheel_height = 6;
-wheel_gap = 1;
-
-//-- Ball caster parameters
-  //user adjustable parameters
-  WallThickness = 2.25; //thickness of the retaining wall
-  BallSize = 16.5;  //diameter of  your ball bearing.
-  Airgap = .65;  // Gap between ball and wall  
-  BallProtrude = .30; //percentage of ball radius sticking out 
-  WheelDiameter = 56;  //what size wheels you will use.
-robot_height = 45;
+robot_height = 47;
 ball_caster_height = robot_height-(BallSize*BallProtrude);
 
-//-- ultrasounds
-ultrasound_hole = 16.5;
 
+//-- Skymega
 skymega_lx = 51.4;
 skymega_ly = 51.4;
 skymega_width=3;
@@ -46,27 +33,12 @@ front_thickness = 3;
 
 
 //-- Printing mode
-printing_mode = false;
+printing_mode = true;
 
 //-- Visualization flags
-show_servos = true;
+show_servos = false;
 show_battery = true;
 show_wheels = false;
-
-module captive_nut(l=nut_radius)
-{
-  union() {
-    rotate([0,0,30])
-    cylinder(r=nut_radius,h=nut_h,$fn=6,center=true);
-    translate([-l/2,0,0]) cube([l,2*nut_radius,nut_h],center=true);
-  }
-}
-
-
-//-- Testing the functions library....
-//nut(d=6, h=3, horizontal=true);
-//polyhole(d=6, h=10);
-//roundcorner(8);
 
 //-- Rear part body
 module rear_part_body()
@@ -180,8 +152,11 @@ module front_part(l=0)
 {
   difference() {
     union() {
-      translate([servo_c4,0,0])
-      cube([battery_c1-servo_c4,5,servo_c1]);
+
+      //-- Right "leg". It is smalle than the left. Just for having space
+      //-- for the battery wires
+      translate([servo_c4,0,4])
+      cube([battery_c1-servo_c4,5,servo_c1-4]);
 
       translate([servo_c4,2*servo_c3-5,0])
       cube([battery_c1-servo_c4,5,servo_c1]);
@@ -233,6 +208,19 @@ module front_part(l=0)
     rotate([0,0,-90])
     translate([0,0,-5])
     teardrop(r=ultrasound_hole/2, h=10);
+
+    //-- Ultrasound drills
+    translate([battery_c1+battery_ear_diam+l,
+               rear_c2/2 -8,
+               servo_c1-ultrasound_hole/2-5-9])
+    rotate([0,90,0])
+    cylinder(r=drill_M3/2, h=20,center=true, $fn=8);
+
+    translate([battery_c1+battery_ear_diam+l,
+               rear_c2/2 +7,
+               servo_c1-ultrasound_hole/2-5+9])
+    rotate([0,90,0])
+    cylinder(r=drill_M3/2, h=20,center=true, $fn=8);
 
   }
 
@@ -320,14 +308,111 @@ module top_plate_skymega(l=0)
   
 }
 
+
+module top_plate_arduino_uno(l=2)
+{
+  top_plate_c2 = rear_c2+5;
+
+  trans1 = [(top_plate_c1+l)/2-rear_c1-nut_radius-1,
+             -top_plate_c2/2+nut_radius+1
+             ,0];
+
+  trans2 = [(top_plate_c1+l)/2 - rear_c1,
+           rear_c2/2,
+           top_plate_thickness/2+servo_c1];
+
+  
+
+  translate(trans2)
+  translate(-trans1)
+  difference() {
+    translate(trans1)
+    difference() {
+      roundedBox([top_plate_c1+l,top_plate_c2,top_plate_thickness],
+                  r=frame_corner_radius);
+
+      translate([-(battery_ear_diam+l+5)/2+(top_plate_c1+l)/2-front_thickness-2-4,0,0])
+      roundedBox([battery_ear_diam+l+5-4, battery_c2-2*battery_ear_diam, rear_c3+10],
+               r=frame_corner_radius);
+
+      translate([-(top_plate_c1+l-skymega_lx)/2 + 3,0,0])
+      union() {
+      translate([skymega_dx, skymega_dy,0])
+        cylinder(r=drill_M3/2, h=20, center=true, $fn=20);
+
+      translate([-skymega_dx, skymega_dy,0])
+        cylinder(r=drill_M3/2, h=20, center=true, $fn=20);
+  
+      translate([skymega_dx, -skymega_dy,0])
+        cylinder(r=drill_M3/2, h=20, center=true, $fn=20);
+
+      translate([-skymega_dx, -skymega_dy,0])
+        cylinder(r=drill_M3/2, h=20, center=true, $fn=20);
+
+      roundedBox([2*skymega_dx-10, top_plate_c2-20,top_plate_thickness+10],frame_corner_radius,true,$fn=20);
+      }
+
+      //-- Captive nuts for the skymega
+      translate([-(top_plate_c1+l-skymega_lx)/2 + 3,0,0])
+      union() {
+        translate([skymega_dx, skymega_dy,-top_plate_thickness+nut_h])
+        cylinder(r=nut_radius, h=top_plate_thickness,center=true,$fn=6);
+
+        translate([-skymega_dx, skymega_dy,-top_plate_thickness+nut_h])
+        cylinder(r=nut_radius, h=top_plate_thickness,center=true,$fn=6);
+
+        translate([skymega_dx, -skymega_dy,-top_plate_thickness+nut_h])
+        cylinder(r=nut_radius, h=top_plate_thickness,center=true,$fn=6);
+
+        translate([-skymega_dx, -skymega_dy,-top_plate_thickness+nut_h])
+        cylinder(r=nut_radius, h=top_plate_thickness,center=true,$fn=6);
+      }
+    }
+    //-- Arduino drill 1 (top-left)
+    cylinder(r=drill_M3/2, h=top_plate_thickness+10,center=true, $fn=8);
+
+    //-- Captive nut for drill 1
+    translate([0, 0,-top_plate_thickness+nut_h])
+    cylinder(r=nut_radius, h=top_plate_thickness,center=true,$fn=6);
+
+    //-- Arduino drill 2 (bottom-left)
+    translate([-1.1,-48.4,0])
+    cylinder(r=drill_M3/2, h=top_plate_thickness+10,center=true, $fn=8);
+
+    //-- Captive nut for drill 2
+    translate([-1.1,-48.4,-top_plate_thickness+nut_h])
+    cylinder(r=nut_radius, h=top_plate_thickness,center=true,$fn=6);
+
+    //-- Arduino drill 3 (top-right)
+    translate([51,-15.3,0])
+    cylinder(r=drill_M3/2, h=top_plate_thickness+10,center=true, $fn=8);
+
+    //-- Captive nut for drill 3
+    translate([51,-15.3,-top_plate_thickness+nut_h])
+    cylinder(r=nut_radius, h=top_plate_thickness,center=true,$fn=6);
+
+    //-- Arduino drill 4 (bottom-right)
+    //translate([51,-43.3,0])
+    //cylinder(r=drill_M3/2, h=top_plate_thickness+10,center=true, $fn=8);
+
+  }
+    
+    
+
+    
+
+}
+
+
 *translate([-(top_plate_c1-skymega_lx)/2 + 3,0,top_plate_thickness/2+3/2])
 skymega();
 
 module miniskybot_frame(l=0)
 {
   union() {
-    top_plate_skymega(l);
-    front_part(l);
+    //top_plate_skymega(l);
+    top_plate_arduino_uno(4);
+    front_part(4);
 
     //projection(cut=false)
     //rotate([90,0,0])
@@ -339,7 +424,7 @@ module miniskybot_frame(l=0)
 module show_robot()
 {
   miniskybot_frame();
-
+ 
   //-- Servos
   if (show_servos) {
     //-- Right servo
