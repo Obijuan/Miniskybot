@@ -5,6 +5,10 @@ rh_diam2 = 21; //-- Rounded horn big diameter
 rh_height = 6; //-- Rounded horn  total height (including the plate height)
 rh_plate_height = 2;  //-- Rounded horn big plate height
 
+//-- Cross horn parameters
+end_diam = 5;
+center_diam = 10;
+length = 15;
 
 
 //-------------------------------------------------------
@@ -58,8 +62,77 @@ module Servo_wheel(or_idiam=50, or_diam=3, h=6)
 
 }
 
+module cross_horn_arm(h=5)
+{
+  translate([0,length-end_diam/2,0])
+  hull() {
+    cylinder(r=end_diam/2, h=h, center=true, $fn=20);
+    translate([0,1-length+end_diam/2,0])
+    cube([center_diam,2,h],center=true);
+  }
+}
+
+module cross_horn_drills(h=5)
+{ 
+  union() {
+    for ( i = [0 : 3] ) {
+        rotate([0,0,i*90])
+        translate([0,13.3,0])
+        cylinder(r=1.5/2, h=h+10,center=true, $fn=6);  
+      }
+  }
+}
+
+
+module cross_horn(h=5)
+{
+  union() {
+    cube([center_diam+0.2,center_diam+0.2,h],center=true);
+
+    for ( i = [0 : 3] ) {
+      rotate( [0,0,i*90])
+      translate([0, center_diam/2, 0])
+      cross_horn_arm(h);
+    }
+  }
+
+}
+
+module servo_wheel_cross(or_idiam=50, or_diam=3, h=6)
+{
+  difference() {
+      raw_wheel(or_idiam=or_idiam, or_diam=or_diam, h=h);
+
+       //-- Inner drill
+      cylinder(center=true, h=2*h + 10, r=center_diam/2,$fn=20);
+
+      //-- substract the cross servo horn
+      translate([0,0,-h/2+4/2+rh_height-3])
+      cross_horn(h=4);
+
+      //-- wheel decoration
+      *for (i=[0:3]) {
+        rotate([0,0,i*90])
+        translate([or_idiam/4,or_idiam/4,0])
+        rotate([0,0,45+180])
+        cylinder(r=6, h=h+10, center=true, $fn=3);
+      }
+  }
+}
+
+
+difference() {
+  servo_wheel_cross();
+  cross_horn_drills();
+}
+
+*difference() {
+  cross_horn(h=4);
+  cross_horn_drills();
+}
+
 //-- Test!
-*Servo_wheel();
+//Servo_wheel();
 
 
 
