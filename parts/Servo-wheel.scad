@@ -98,6 +98,34 @@ module cross_horn(h=5)
 
 }
 
+
+module horn6_arm(h=5)
+{
+  horn6_arm_length=10;
+  horn6_arm_end_diam = 5;
+  horn6_arm_center_diam=7.5;
+
+  translate([0,horn6_arm_length-end_diam/2,0])
+  hull() {
+    cylinder(r=horn6_arm_end_diam/2, h=h, center=true, $fn=20);
+    translate([0,-horn6_arm_length+horn6_arm_end_diam/2,0])
+    cube([horn6_arm_center_diam,0.1,h],center=true);
+  }
+}
+
+module horn6(h=5)
+{
+  union() {
+    cylinder(r=15/2,h=h,center=true);
+
+    for ( i = [0 : 5] ) {
+      rotate( [0,0,i*60])
+      translate([0, 15/2*cos(30), 0])
+      horn6_arm(h);
+    }
+  }
+}
+
 module servo_wheel_cross(or_idiam=50, or_diam=3, h=6)
 {
   difference() {
@@ -120,8 +148,26 @@ module servo_wheel_cross(or_idiam=50, or_diam=3, h=6)
   }
 }
 
+module servo_wheel_horn6(or_idiam=50, or_diam=3, h=6)
+{
+  difference() {
+      raw_wheel(or_idiam=or_idiam, or_diam=or_diam, h=h);
 
-difference() {
+       //-- Inner drill
+      cylinder(center=true, h=2*h + 10, r=center_diam/2,$fn=20);
+
+      //-- substract the cross servo horn
+      translate([0,0,-h/2+4/2+rh_height-3])
+      horn6(h=4);
+  }
+}
+
+
+//horn6_arm();
+//horn6();
+servo_wheel_horn6();
+
+*difference() {
   servo_wheel_cross();
   cross_horn_drills();
 }
