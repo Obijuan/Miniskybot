@@ -13,6 +13,7 @@ include <configuration.scad>
 include <functions.scad>
 use <battery_holder.scad>
 use <Servo-wheel.scad>
+use <fake_ultrasound.scad>
 
 robot_height = 47;
 ball_caster_height = robot_height-(BallSize*BallProtrude);
@@ -33,12 +34,13 @@ front_thickness = 3;
 
 
 //-- Printing mode
-printing_mode = true;
+printing_mode = false;
 
 //-- Visualization flags
 show_servos = false;
-show_battery = true;
+show_battery = false;
 show_wheels = false;
+show_ultrasound = true;
 
 //-- Rear part body
 module rear_part_body()
@@ -397,10 +399,6 @@ module top_plate_arduino_uno(l=2)
 
   }
     
-    
-
-    
-
 }
 
 
@@ -413,10 +411,6 @@ module miniskybot_frame(l=0)
     //top_plate_skymega(l);
     top_plate_arduino_uno(4);
     front_part(4);
-
-    //projection(cut=false)
-    //rotate([90,0,0])
-    //rotate([0,0,90])
     rear_part();
   }
 }
@@ -446,7 +440,7 @@ module show_robot()
     color("blue") battery();
   }
 
-  //-- Wheels
+  //-- Wheels  
   if (show_wheels) {
     color("green")
     translate([servo_c5,-servo_c7-wheel_height/2-wheel_gap,servo_c6])
@@ -457,6 +451,15 @@ module show_robot()
     translate([servo_c5,wheel_height/2+2*servo_c3+servo_c7+wheel_gap,servo_c6])
     rotate([90,0,0])
     Servo_wheel();
+  }
+
+  l=4;
+
+  if (show_ultrasound) {
+    translate([battery_c1+battery_ear_diam+l-ultrasound_base_lz-front_thickness,
+               rear_c2/2,servo_c1-ultrasound_hole/2-5])
+    rotate([0,90,0])
+    fake_ultrasound_srf02();
   }
 
 }

@@ -61,7 +61,12 @@ wheel_gap = 1;
 
 //-- ultrasounds
 ultrasound_hole = 16.5;
-
+ultrasound_base_lx = 24+1;
+ultrasound_base_ly = 20+1;
+ultrasound_base_lz = 3;
+ultrasound_length = 12.5;
+ultrasound_drill_1 = [-9,7,0];
+ultrasound_drill_2 = [9,-8,0];
 
 
 
