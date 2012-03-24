@@ -126,6 +126,17 @@ module horn6(h=5)
   }
 }
 
+module horn6_drills(h=5)
+{ 
+  union() {
+    for ( i = [0 : 5] ) {
+        rotate([0,0,i*60])
+        translate([0,10.9,0])
+        cylinder(r=1.5/2, h=h+10,center=true, $fn=6);  
+      }
+  }
+}
+
 module servo_wheel_cross(or_idiam=50, or_diam=3, h=6)
 {
   difference() {
@@ -163,9 +174,15 @@ module servo_wheel_horn6(or_idiam=50, or_diam=3, h=6)
 }
 
 
-//horn6_arm();
-//horn6();
-servo_wheel_horn6();
+*difference() {
+  horn6();
+  horn6_drills();
+}
+
+difference() {
+  servo_wheel_horn6();
+  horn6_drills();
+}
 
 *difference() {
   servo_wheel_cross();
