@@ -1,7 +1,7 @@
 //-- Futaba 3003 servo rounded horn parameters
 
-rh_diam1 = 8;  //-- Rounded horn small diameter
-rh_diam2 = 21; //-- Rounded horn big diameter
+rh_diam1 = 8.5;  //-- Rounded horn small diameter
+rh_diam2 = 21.5; //-- Rounded horn big diameter
 rh_height = 6; //-- Rounded horn  total height (including the plate height)
 rh_plate_height = 2;  //-- Rounded horn big plate height
 
@@ -137,6 +137,18 @@ module horn6_drills(h=5)
   }
 }
 
+module round_horn_drills(h=5)
+{
+  union() {
+    for ( i = [0 : 3] ) {
+        rotate([0,0,i*90])
+        translate([0,7.3,0])
+        cylinder(r=1.5/2, h=h+10,center=true, $fn=6);  
+      }
+  }
+}
+
+
 module servo_wheel_cross(or_idiam=50, or_diam=3, h=6)
 {
   difference() {
@@ -179,7 +191,7 @@ module servo_wheel_horn6(or_idiam=50, or_diam=3, h=6)
   horn6_drills();
 }
 
-difference() {
+*difference() {
   servo_wheel_horn6();
   horn6_drills();
 }
@@ -195,7 +207,10 @@ difference() {
 }
 
 //-- Test!
-//Servo_wheel();
+difference() {
+  Servo_wheel();
+  round_horn_drills();
+}
 
 
 
