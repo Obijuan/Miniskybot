@@ -1,3 +1,11 @@
+%%------------------------------------------------------------------
+%%--  Miniskybot robot main class
+%%--  (c) Juan Gonzalez-Gomez (Obijuan)  juan@iearobotics.com
+%%--  May, 2012. Robotics and Cybernetics group. UPM
+%%----------------------------------------------------------------------
+%%-- Released under the GPL license
+%%----------------------------------------------------------------------
+
 function r = miniskybot()
 
   %%-- All the units are in mm
@@ -6,17 +14,18 @@ function r = miniskybot()
   %%-- Attributes
   %%-----------------------------------
 
-  %%-- Robot pose: x,y,theta. Theta is the orientation (in degrees)
+  %%-- Robot pose: x,y,theta. Theta is the orientation (in radians)
   r.pose = [0 0 0]';
 
 
   %%-- Geometric attributes
-  %%-- Wheels radious (mm)
+  %%-- Miniskybot Wheel radious (mm)
   r.wheel_rad = 58/2;
   %%-- Distance betwen the wheels and the center of mass (mm)
   r.l = 88/2;
 
   %%-- Maximum servo angular speed (rad/seg)
+  %%-- It has been measurred empirically
   r.wheel_wmax = deg2rad(360);
 
   %%-- Maximum robot angular and linear velocities

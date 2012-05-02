@@ -1,3 +1,18 @@
+%%--------------------------------------------------------------------
+%%--  Miniskybot Class
+%%--  (c) Juan Gonzalez-Gomez (Obijuan)  juan@iearobotics.com
+%%--  May, 2012. Robotics and Cybernetics group. UPM
+%%----------------------------------------------------------------------
+%%-- Released under the GPL license
+%%----------------------------------------------------------------------
+
+%%---------------------------------
+%%-- Method: set
+%%--   Set one attribute
+%%-- Inputs: 
+%%--   r: A Miniskybot object
+%%---------------------------------
+
 function s = set (p, varargin)
   s = p;
   prop = varargin{1};

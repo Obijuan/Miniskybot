@@ -1,3 +1,16 @@
+%%--------------------------------------------------------------------
+%%--  Miniskybot Class
+%%--  (c) Juan Gonzalez-Gomez (Obijuan)  juan@iearobotics.com
+%%--  May, 2012. Robotics and Cybernetics group. UPM
+%%----------------------------------------------------------------------
+%%-- Released under the GPL license
+%%----------------------------------------------------------------------
+
+%%---------------------------------
+%%-- Method: Draw
+%%-- Input: A Miniskybot object
+%%-- Draw the miniskybot on the screen
+%%---------------------------------
 function draw(r)
 
 %%-- Transformation matrix for drawing the robot
@@ -65,12 +78,14 @@ y_w1_axis = [P12(2) P13(2)];
 x_w2_axis = [P14(1) P15(1)];
 y_w2_axis = [P14(2) P15(2)];
 
-hold off;
-
 %%-- Draw left wheel
 plot(x_w1, y_w1,'g','linewidth',6);
 hold on;
+
+%%-- Draw right wheel
 plot(x_w2, y_w2,'g','linewidth',6);
+
+%%-- Draw robot body
 plot(x_body, y_body, 'b', 'linewidth',2);
 plot(x_w1_axis, y_w1_axis,'b','linewidth',6);
 plot(x_w2_axis, y_w2_axis,'b','linewidth',6);

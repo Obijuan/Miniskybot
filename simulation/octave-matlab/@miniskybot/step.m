@@ -1,3 +1,19 @@
+%%--------------------------------------------------------------------
+%%--  Miniskybot Class
+%%--  (c) Juan Gonzalez-Gomez (Obijuan)  juan@iearobotics.com
+%%--  May, 2012. Robotics and Cybernetics group. UPM
+%%----------------------------------------------------------------------
+%%-- Released under the GPL license
+%%----------------------------------------------------------------------
+
+%%---------------------------------
+%%-- Method: step
+%%-- Inputs: 
+%%--   r: A Miniskybot object
+%%--   st: Simulation step in seconds
+%%-- Simulate one step
+%%---------------------------------
+
 function s = step(r, st)
   s = r;
 
