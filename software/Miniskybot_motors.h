@@ -29,9 +29,15 @@ class MotorL293
 	//-- Constructor:
 	void MotorL293( int pinLeft, int pinRight, int pinEnable);
 	
+	//-- Setup function:
+	void begin();
+
 	//-- Set velocity of a motor ( 0-255 , if > 0 forward, if < 0 backwards)
 	void setVelocity( int velocity );
 	
+	//-- Set velocity of a motor ( 0-255 , true -> forward, false -> backwards)
+	void setVelocity( int velocity , bool sense);
+
 	//-- Get the current velocity of the motor (not actual velocity, the assigned one) [-255,255]
 	int getVelocity();
 
