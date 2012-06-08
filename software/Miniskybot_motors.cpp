@@ -31,6 +31,12 @@
 #include "Miniskybot_motors.h"
 
 
+//-------------------------------------------------------------------------
+//-- Constructor
+//-------------------------------------------------------------------------
+//-- Arguments: pins conected to the H-bridge (left, right and chip enable)
+//-------------------------------------------------------------------------
+
 void MotorL293::MotorL293( int pinLeft, int pinRight, int pinEnable)
 {
 	_pinLeft = pinLeft;
@@ -40,6 +46,11 @@ void MotorL293::MotorL293( int pinLeft, int pinRight, int pinEnable)
 	_speed = 0;
 	_forward = true;
 }
+
+
+//--------------------------------------
+//-- Initialize the motor object:
+//--------------------------------------
 
 void MotorL293::begin()
 {
@@ -53,6 +64,12 @@ void MotorL293::begin()
 	digitalWrite( _pinRight, LOW);
 	digitalWrite( _pinEnable, LOW );
 }
+
+
+//---------------------------------------------------------
+//-- Sets motor velocity to a value between 0 and 255.
+//-- Sense is given by the sign of velocity.
+//---------------------------------------------------------
 
 void MotorL293::setVelocity( int velocity)
 {
@@ -82,6 +99,13 @@ void MotorL293::setVelocity( int velocity)
 	analogWrite(  _pinEnable, _speed);
 }
 
+
+//---------------------------------------------------------
+//-- Sets motor velocity to a value between 0 and 255.
+//-- Sense is given explicitely by forward, velocity
+//-- should be positive.
+//---------------------------------------------------------
+
 void MotorL293::setVelocity( int velocity, bool forward)
 {
 	//-- Assign new values to variables:
@@ -105,6 +129,12 @@ void MotorL293::setVelocity( int velocity, bool forward)
 	analogWrite(  _pinEnable, _speed); 
 }
 
+
+//----------------------------------------------------
+//-- Returns the value of the current velocity
+//-- (not actual velocity, the one given by the user)
+//----------------------------------------------------
+
 int MotorL293::getVelocity()
 {
 	//-- Set the modulus:
@@ -116,6 +146,12 @@ int MotorL293::getVelocity()
 	return velocity;
 }
 
+
+
+//----------------------------------------------------
+//-- Just stops the motor
+//----------------------------------------------------
+
 void MotorL293::emergencyBrake()
 {
 	//-- Stop the motor
@@ -123,3 +159,5 @@ void MotorL293::emergencyBrake()
 	digitalWrite( _pinLeft, HIGH);
 	digitalWrite( _pinRight, HIGH);
 }
+
+
