@@ -42,8 +42,26 @@ class SensorIR
 	
 	int _pin;
 	float _length;
-	float _value;
 	float _alpha, _beta;
 }
 
+class SensorUS
+{
+	public:
+	
+	//-- Constructor
+	void SensorUS( int pinSignal); //-- For 3-wire US sensors (single trigger/echo)
+	void SensorUS( int pinTrigger, int pinEcho);  //-- For 4-wire US sensor
+
+	//-- Setup (only needed for 4-wire type sensor)
+	void begin();
+
+	//-- Read distance:
+	float getLength();
+	
+	private:
+	bool _type; //-- True for 3-wire, False for 4-wire	
+	int _pin[2]; 
+	float _length; 
+}
 #endif // Mini_sensors_h
