@@ -17,14 +17,20 @@
 //-- https://github.com/Obijuan/Miniskybot
 //------------------------------------------------------------------------------
 
+#ifndef Miniskybot_H
+#define Miniskybot_H
+
+
+#if defined(ARDUINO) && ARDUINO >= 100
+#include "Arduino.h"
+#else
+#include "WProgram.h"
+#endif
 
 #include "Miniskybot_motors.h"
 #include "Miniskybot_sensors.h"
 
-#ifndef Miniskybot_H
-#define Miniskybot_H
 
-//-- INCLUDES
 
 class Miniskybot
 {

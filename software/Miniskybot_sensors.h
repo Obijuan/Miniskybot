@@ -21,7 +21,14 @@
 #ifndef Mini_sensors_h
 #define Mini_sensors_h
 
+//-- Making it compatible with Arduino 1.0 and Arduino 22:
+//-- (source: http://forums.adafruit.com/viewtopic.php?f=25&t=24563 )
+
+#if defined(ARDUINO) && ARDUINO >= 100
+#include <Arduino.h>
+#else
 #include <WProgram.h>
+#endif
 
 class SensorIR
 {
