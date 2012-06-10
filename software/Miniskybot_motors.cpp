@@ -21,12 +21,12 @@
 
 //-- Making it compatible with Arduino 1.0 and Arduino 22:
 //-- (source: http://forums.adafruit.com/viewtopic.php?f=25&t=24563 )
-
+/*
 #if defined(ARDUINO) && ARDUINO >= 100
 #include "Arduino.h"
 #else
 #include "WProgram.h"
-#endif
+#endif*/
 
 #include "Miniskybot_motors.h"
 
@@ -37,7 +37,7 @@
 //-- Arguments: pins conected to the H-bridge (left, right and chip enable)
 //-------------------------------------------------------------------------
 
-void MotorL293::MotorL293( int pinLeft, int pinRight, int pinEnable)
+MotorL293::MotorL293( int pinLeft, int pinRight, int pinEnable)
 {
 	_pinLeft = pinLeft;
 	_pinRight = pinRight;

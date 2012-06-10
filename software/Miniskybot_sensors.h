@@ -21,13 +21,15 @@
 #ifndef Mini_sensors_h
 #define Mini_sensors_h
 
+#include <WProgram.h>
+
 class SensorIR
 {
 	public:
 	
 	//-- Constructor
-	void SensorIR( int pin);
-	void SensorIR( int pin, float alpha, float beta);
+	SensorIR( int pin);
+	SensorIR( int pin, float alpha, float beta);
 	
 	//-- Get the voltage measure from the arduino
 	float getValue();
@@ -43,15 +45,15 @@ class SensorIR
 	int _pin;
 	float _length;
 	float _alpha, _beta;
-}
+};
 
 class SensorUS
 {
 	public:
 	
 	//-- Constructor
-	void SensorUS( int pinSignal); //-- For 3-wire US sensors (single trigger/echo)
-	void SensorUS( int pinTrigger, int pinEcho);  //-- For 4-wire US sensor
+	SensorUS( int pinSignal); //-- For 3-wire US sensors (single trigger/echo)
+	SensorUS( int pinTrigger, int pinEcho);  //-- For 4-wire US sensor
 
 	//-- Setup (only needed for 4-wire type sensor)
 	void begin();
@@ -63,5 +65,6 @@ class SensorUS
 	bool _type; //-- True for 3-wire, False for 4-wire	
 	int _pin[2]; 
 	float _length; 
-}
-#endif // Mini_sensors_h
+};
+
+#endif // Mini_sensors_h#include <WProgram.h>

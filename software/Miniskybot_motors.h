@@ -22,12 +22,14 @@
 #ifndef Mini_motors_h
 #define Mini_motors_h
 
+#include <WProgram.h>
+
 class MotorL293
 {
 	public:
 	
 	//-- Constructor:
-	void MotorL293( int pinLeft, int pinRight, int pinEnable);
+	MotorL293( int pinLeft, int pinRight, int pinEnable);
 	
 	//-- Setup function:
 	void begin();
@@ -46,9 +48,9 @@ class MotorL293
 
 
 	private:
-	uint8 _speed; //-- Speed of the motor (modulus)
+	unsigned int _speed; //-- Speed of the motor (modulus)
 	bool _forward; //-- true if forwards, false if backwards
-	int _pinLeft, _pintRight, _pinEnable; //-- Stores the pins for H-bridge connection
+	int _pinLeft, _pinRight, _pinEnable; //-- Stores the pins for H-bridge connection
  
 };
 

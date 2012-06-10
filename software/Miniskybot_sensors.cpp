@@ -20,12 +20,12 @@
 
 //-- Making it compatible with Arduino 1.0 and Arduino 22:
 //-- (source: http://forums.adafruit.com/viewtopic.php?f=25&t=24563 )
-
+/*
 #if defined(ARDUINO) && ARDUINO >= 100
 #include "Arduino.h"
 #else
 #include "WProgram.h"
-#endif
+#endif*/
 
 #include "Miniskybot_sensors.h"
 
@@ -36,15 +36,15 @@
 //################################################################################
 
 //-- Constructor
-void SensorIR::SensorIR(int pin)
+SensorIR::SensorIR(int pin)
 {
 	_pin = pin;
 	_alpha = _beta = 1;
-	_length = _value = 0;
+	_length = 0;
 }
 	
 //-- Constructor (with calibration)
-void SensorIR::SensorIR( int pin, float alpha, float beta)
+SensorIR::SensorIR( int pin, float alpha, float beta)
 {
 	_pin = pin;
 	calibrate( alpha, beta);
@@ -66,16 +66,16 @@ float SensorIR::getValue()
 
 
 //-- Retuns the distance (cm) to the obstacle
-float SensorIR::getLength();
+float SensorIR::getLength()
 {
 	//-- Get the voltage reading:
 	float value = getValue();
 
 	//-- Convert the value to distance:
-	float length = apha * pow(value/1000, -beta);
+	float length = _alpha * pow(value/1000, -_beta);
 	
 	//-- Assing this value to the internal variable:
-	_length = lenght;
+	_length = length;
 
 	//-- return the length:
 	return length; 
@@ -98,7 +98,7 @@ void SensorIR::calibrate( float alpha, float beta)
 //################################################################################
 
 //-- Constructor
-void SensorUS::SensorUS( int pinSignal) //-- For 3-wire US sensors (single trigger/echo)
+SensorUS::SensorUS( int pinSignal) //-- For 3-wire US sensors (single trigger/echo)
 {
 	_type = true;
 	_length = 0;
@@ -106,7 +106,7 @@ void SensorUS::SensorUS( int pinSignal) //-- For 3-wire US sensors (single trigg
 }
 
 
-void SensorUS::SensorUS( int pinTrigger, int pinEcho) //-- For 4-wire US sensor
+SensorUS::SensorUS( int pinTrigger, int pinEcho) //-- For 4-wire US sensor
 {
 	_type = false;
 	_length = 0;
@@ -118,7 +118,7 @@ void SensorUS::SensorUS( int pinTrigger, int pinEcho) //-- For 4-wire US sensor
 //-- Setup (only needed for 4-wire type sensor)
 void SensorUS::begin()
 {
-	if (!type) //-- If 4-wire sensor
+	if (!_type) //-- If 4-wire sensor
 	{
 		pinMode( _pin[0], OUTPUT); //-- Set trigger pin as output
 		pinMode( _pin[1], INPUT); //-- Set echo pin as input
@@ -129,7 +129,7 @@ void SensorUS::begin()
 //-- Read distance:	
 float SensorUS::getLength()
 {
-	if (type)
+	if (_type)
 	{
 		//---------------------------------------------------------
 		//-- This is performed for a 3-wire sensor
@@ -150,7 +150,7 @@ float SensorUS::getLength()
 		digitalWrite( pin, LOW);
 		
 		//-- Set pin as input:
-		pinMode( pin, INPTU);
+		pinMode( pin, INPUT);
 		
 		//-- Measure the response pulse:
 		unsigned long duration = pulseIn( pin, HIGH);
