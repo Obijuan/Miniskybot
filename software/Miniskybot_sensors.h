@@ -34,9 +34,12 @@ class SensorIR
 {
 	public:
 	
-	//-- Constructor
-	SensorIR( int pin);
-	SensorIR( int pin, float alpha, float beta);
+	//-- Constructor:
+	SensorIR();
+	
+	//-- Setup (attach the servo to the pin)
+	void attach( int pin);
+	void attach( int pin, float alpha, float beta);
 	
 	//-- Get the voltage measure from the arduino
 	float getValue();
@@ -59,8 +62,11 @@ class SensorUS
 	public:
 	
 	//-- Constructor
-	SensorUS( int pinSignal); //-- For 3-wire US sensors (single trigger/echo)
-	SensorUS( int pinTrigger, int pinEcho);  //-- For 4-wire US sensor
+	SensorUS();
+	
+	//-- Attach the sensor to the pins
+	void attach( int pinSignal); //-- For 3-wire US sensors (single trigger/echo)
+	void attach( int pinTrigger, int pinEcho);  //-- For 4-wire US sensor
 
 	//-- Setup (only needed for 4-wire type sensor)
 	void begin();

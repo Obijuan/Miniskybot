@@ -29,11 +29,11 @@
 //-- Arguments: pins conected to the H-bridge (left, right and chip enable)
 //-------------------------------------------------------------------------
 
-MotorL293::MotorL293( int pinLeft, int pinRight, int pinEnable)
+MotorL293::MotorL293( )
 {
-	_pinLeft = pinLeft;
-	_pinRight = pinRight;
-	_pinEnable = pinEnable;
+	_pinLeft = -1;
+	_pinRight = -1;
+	_pinEnable = -1;
 
 	_speed = 0;
 	_forward = true;
@@ -44,8 +44,13 @@ MotorL293::MotorL293( int pinLeft, int pinRight, int pinEnable)
 //-- Initialize the motor object:
 //--------------------------------------
 
-void MotorL293::begin()
+void MotorL293::attach(int pinLeft, int pinRight, int pinEnable)
 {
+	//-- Save the pin configuration
+	_pinLeft = pinLeft;
+	_pinRight = pinRight;
+	_pinEnable = pinEnable;
+
 	//-- Set the pins as outputs
 	pinMode( _pinLeft, OUTPUT);
 	pinMode( _pinRight, OUTPUT);
@@ -65,30 +70,34 @@ void MotorL293::begin()
 
 void MotorL293::setVelocity( int velocity)
 {
-	//-- Distinguish between forward / backwards movement
-	if ( velocity >= 0 )
+	//-- If pins are not assigned, don't execute any code
+	if ( _pinLeft != -1 && _pinRight != -1 && _pinEnable != -1)
 	{
-		//-- Assign new values to variables:
-		_speed = velocity;
-		_forward = true;
+		//-- Distinguish between forward / backwards movement
+		if ( velocity >= 0 )
+		{
+			//-- Assign new values to variables:
+			_speed = velocity;
+			_forward = true;
 		
-		//-- Send the correct signals to the H-bridge:
-		digitalWrite( _pinLeft, LOW);
-		digitalWrite( _pinRight, HIGH);
-	}
-	else
-	{
-		//-- Assign new values to variables:
-		_speed = -velocity;
-		_forward = false;
+			//-- Send the correct signals to the H-bridge:
+			digitalWrite( _pinLeft, LOW);
+			digitalWrite( _pinRight, HIGH);
+		}
+		else
+		{
+			//-- Assign new values to variables:
+			_speed = -velocity;
+			_forward = false;
 
-		//-- Send the correct signals to the H-bridge:	
-		digitalWrite( _pinLeft, HIGH);
-		digitalWrite( _pinRight, LOW);
-	}
+			//-- Send the correct signals to the H-bridge:	
+			digitalWrite( _pinLeft, HIGH);
+			digitalWrite( _pinRight, LOW);
+		}
 
-	//-- Set speed:
-	analogWrite(  _pinEnable, _speed);
+		//-- Set speed:
+		analogWrite(  _pinEnable, _speed);
+	}
 }
 
 
@@ -100,25 +109,29 @@ void MotorL293::setVelocity( int velocity)
 
 void MotorL293::setVelocity( int velocity, bool forward)
 {
-	//-- Assign new values to variables:
-	_speed = abs(velocity);		
-	_forward = forward;
-	
-	
-	//-- Send the correct signals to the H-bridge:
-	if ( _forward )
-	{				
-		digitalWrite( _pinLeft, LOW);
-		digitalWrite( _pinRight, HIGH);
-	}
-	else
+	//-- If pins are not assigned, don't execute any code
+	if ( _pinLeft != -1 && _pinRight != -1 && _pinEnable != -1)
 	{
-		digitalWrite( _pinLeft, HIGH);
-		digitalWrite( _pinRight, LOW);
-	}
+		//-- Assign new values to variables:
+		_speed = abs(velocity);		
+		_forward = forward;
+	
+	
+		//-- Send the correct signals to the H-bridge:
+		if ( _forward )
+		{				
+			digitalWrite( _pinLeft, LOW);
+			digitalWrite( _pinRight, HIGH);
+		}
+		else
+		{
+			digitalWrite( _pinLeft, HIGH);
+			digitalWrite( _pinRight, LOW);
+		}
 
-	//-- Set speed:
-	analogWrite(  _pinEnable, _speed); 
+		//-- Set speed:
+		analogWrite(  _pinEnable, _speed);
+	} 
 }
 
 

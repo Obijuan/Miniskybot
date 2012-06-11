@@ -36,10 +36,10 @@ class MotorL293
 	public:
 	
 	//-- Constructor:
-	MotorL293( int pinLeft, int pinRight, int pinEnable);
+	MotorL293();
 	
-	//-- Setup function:
-	void begin();
+	//-- Setup function, attach to its pins:
+	void attach(int pinLeft, int pinRight, int pinEnable);
 
 	//-- Set velocity of a motor ( 0-255 , if > 0 forward, if < 0 backwards)
 	void setVelocity( int velocity );
