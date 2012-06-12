@@ -6,8 +6,7 @@
 #define MAX_SENSORS_IR 1
 
 //-- Table containing all the alpha and beta parameters pairs for all IR sensors
-const float CALIBRATION_PARAM[MAX_SENSORS_IR][2] = 
-{
+const float CALIBRATION_PARAM[MAX_SENSORS_IR][2] = {
 	{ 1, 1 } //-- Alpha1, Beta1
 };
 

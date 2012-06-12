@@ -20,11 +20,11 @@
 #include "Miniskybot.h"
 
 //-- Constructor
-Miniskybot()
+Miniskybot::Miniskybot()
 {
 	_num_motors = 0;
-	_num_US_sensors = 0;
-	_num_IR_sensors = 0;
+	_num_US_sensor = 0;
+	_num_IR_sensor = 0;
 	
 	_velocity = 0;
 	_angularVelocity = 0;
@@ -34,7 +34,7 @@ Miniskybot()
 //-- Setup:
 //-----------------------------------------------------
 //-- Add elements
-void addMotor( int pinLeft, int pinRight, int pinEnable )
+void Miniskybot::addMotor( int pinLeft, int pinRight, int pinEnable )
 {
 	if ( _num_motors < MAX_MOTORS)
 	{
@@ -44,7 +44,7 @@ void addMotor( int pinLeft, int pinRight, int pinEnable )
 }
 
 
-void addSensor( int type, int pin)
+void Miniskybot::addSensor( int type, int pin)
 {
 	if ( type == IR )
 	{
@@ -57,7 +57,7 @@ void addSensor( int type, int pin)
 	}
 	else if (type == US_3PIN)
 	{
-		if ( _num_US_sensor < MAX_US_SENSORS )
+		if ( _num_US_sensor < MAX_SENSORS_US )
 		{
 			sensor_US[_num_US_sensor].attach( pin);
 			_num_US_sensor++;
@@ -66,11 +66,11 @@ void addSensor( int type, int pin)
 }
 
 
-void addSensor( int type, int pinTrigger, int pinEcho)
+void Miniskybot::addSensor( int type, int pinTrigger, int pinEcho)
 {
 	if (type == US_4PIN)
 	{
-		if ( _num_US_sensor < MAX_US_SENSORS )
+		if ( _num_US_sensor < MAX_SENSORS_US )
 		{
 			sensor_US[_num_US_sensor].attach( pinTrigger, pinEcho);
 			_num_US_sensor++;
@@ -82,7 +82,7 @@ void addSensor( int type, int pinTrigger, int pinEcho)
 //-- Movement control:
 //-----------------------------------------------------
 //-- Access individual elements
-void motorControl( int velocity , int index)
+void Miniskybot::motorControl( int velocity , int index)
 {
 	if (index == -1 )
 	{
@@ -101,14 +101,14 @@ void motorControl( int velocity , int index)
 }
 
 //-- Robot control
-void move( float velocity, float angularVelocity)
+void Miniskybot::move( float velocity, float angularVelocity)
 {
 	//-- Control orders and so on
 }
 
 //-- Sensor data:
 //----------------------------------------------------
-float getDistance( int type, int sensor )
+float Miniskybot::getDistance( int type, int sensor )
 {
 	if ( type == IR )
 	{
@@ -118,7 +118,7 @@ float getDistance( int type, int sensor )
 	else if (type == US || type == US_3PIN || type == US_4PIN)
 	{
 		if (sensor < _num_US_sensor)
-			return sensor_US[sensor].getLegnth();
+			return sensor_US[sensor].getLength();
 	}
 }
 
