@@ -68,9 +68,6 @@ class SensorUS
 	void attach( int pinSignal); //-- For 3-wire US sensors (single trigger/echo)
 	void attach( int pinTrigger, int pinEcho);  //-- For 4-wire US sensor
 
-	//-- Setup (only needed for 4-wire type sensor)
-	void begin();
-
 	//-- Read distance:
 	float getLength();
 	
