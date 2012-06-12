@@ -1,5 +1,8 @@
 #include <Miniskybot.h>
 
+#define LEFT_MOTOR 0
+#define RIGHT_MOTOR 1
+
 const short BRIDGE_L1 = 2;
 const short BRIDGE_R1 = 4; 
 const short BRIDGE_E1 = 3;
@@ -8,12 +11,13 @@ const short BRIDGE_L2 = 7;
 const short BRIDGE_R2 = 6; 
 const short BRIDGE_E2 = 5;
 
-Miniskybot miniskybot;
-
 const unsigned TIME = 500; //-- (ms)
 
-#define BUFFER_SIZE
+#define BUFFER_SIZE 4
 char buffer[BUFFER_SIZE];
+
+Miniskybot miniskybot;
+
 
 void setup()
 {
@@ -61,8 +65,15 @@ void loop()
 	}
 	
 	//-- Set the velocity obtained via serial port on the motors
-	miniskybot.motorControl( velocity, 0);
-	miniskybot.motorControl( -velocity, 1);
+	miniskybot.motorControl( velocity, LEFT_MOTOR);
+	miniskybot.motorControl( -velocity, RIGHT_MOTOR);
+
+	//-- Wait TIME ms
+	delay(TIME);
+	
+	//-- Stop the robot
+	miniskybot.motorControl( 0, LEFT_MOTOR);
+	miniskybot.motorControl( 0, RIGHT_MOTOR);
 
 }
 
