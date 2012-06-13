@@ -121,13 +121,13 @@ void Miniskybot::move( float velocity, float angularVelocity)
 	if( _num_motors == MAX_MOTORS )
 	{
 		//-- Calculate max angular velocity
-		float omega_max = 2*VELOCITY_TABLE[NUM_VALUES-1][0]/DIST_WHEEL;
+		float omega_max = 2*VELOCITY_TABLE[0][0]/DIST_WHEEL;
 		
 		//-- If angular velocity requested is larger than max, use max angular speed
 		if ( abs(angularVelocity) > omega_max) { angularVelocity > 0 ? angularVelocity = omega_max : angularVelocity = -omega_max;}
 
 		//-- Find max linear velocity, given that angular velocity
-		float linear_max = VELOCITY_TABLE[NUM_VALUES-1][0] - ( DIST_WHEEL / 2.0) * abs(angularVelocity);
+		float linear_max = VELOCITY_TABLE[0][0] - ( DIST_WHEEL / 2.0) * abs(angularVelocity);
 
 		//-- If angular velocity requested is larger than max, use max angular speed
 		if ( abs(velocity) > linear_max) { velocity > 0 ? velocity = linear_max : velocity = -linear_max;}
@@ -139,12 +139,12 @@ void Miniskybot::move( float velocity, float angularVelocity)
 
 		//-- Look for the values corresponging to that speeds:
 		short value_left, value_right;
-		value_left = lookUp( v_left);
-		value_right = lookUp( v_right);
+		value_left = v_left/abs(v_left)*lookUp( abs(v_left));
+		value_right = v_right/abs(v_right)*lookUp( abs(v_right));
 
 		//-- Set the speed to the motors:
 		motor[0].setVelocity( value_left);
-		motor[1].setVelocity( value_right);
+		motor[1].setVelocity( -value_right);
 	}
 	
 }
