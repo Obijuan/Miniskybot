@@ -81,29 +81,72 @@ void Miniskybot::addSensor( int type, int pinTrigger, int pinEcho)
 
 //-- Movement control:
 //-----------------------------------------------------
-//-- Access individual elements
-void Miniskybot::motorControl( int velocity , int index)
+//-- Access individual elements (or all elements if index == -1)
+
+//-- Gives a motor the control value [0-255] 
+void Miniskybot::motorControl( short value , int index)
 {
 	if (index == -1 )
 	{
 		//-- Set velocity in all motors
 		for (int i = 0; i < _num_motors; i++)
 		{
-			motor[i].setVelocity( velocity);
+			motor[i].setVelocity( value);
 		}
 	}
 	else
 	{	
 		//-- Set velocity in just one motor
 		if (index < _num_motors)
-			motor[index].setVelocity( velocity );
+			motor[index].setVelocity( value );
 	}
+}
+
+//-- Sets a motor with the velocity suggested
+void Miniskybot::motorVelocity( int velocity, int index)
+{
+	//-- Looks for the control value in the table:
+	short value = lookUp(velocity);
+
+	//-- Sets that value
+	motorControl(value , index);
 }
 
 //-- Robot control
 void Miniskybot::move( float velocity, float angularVelocity)
 {
-	//-- Control orders and so on
+	//-- This function gives priority to turning over linear speed
+
+	//-- This action can only be executed with two wheels
+	if( _num_motors == MAX_MOTORS )
+	{
+		//-- Calculate max angular velocity
+		float omega_max = 2*VELOCITY_TABLE[NUM_VALUES-1][0]/DIST_WHEEL;
+		
+		//-- If angular velocity requested is larger than max, use max angular speed
+		if ( abs(angularVelocity) > omega_max) { angularVelocity > 0 ? angularVelocity = omega_max : angularVelocity = -omega_max;}
+
+		//-- Find max linear velocity, given that angular velocity
+		float linear_max = VELOCITY_TABLE[NUM_VALUES-1][0] - ( DIST_WHEEL / 2.0) * abs(angularVelocity);
+
+		//-- If angular velocity requested is larger than max, use max angular speed
+		if ( abs(velocity) > linear_max) { velocity > 0 ? velocity = linear_max : velocity = -linear_max;}
+
+		//-- Calculate the needed speed of each wheel:
+		float v_left, v_right;
+		v_right = velocity + angularVelocity * DIST_WHEEL / 2.0;
+		v_left = velocity - angularVelocity * DIST_WHEEL / 2.0;
+
+		//-- Look for the values corresponging to that speeds:
+		short value_left, value_right;
+		value_left = lookUp( v_left);
+		value_right = lookUp( v_right);
+
+		//-- Set the speed to the motors:
+		motor[0].setVelocity( value_left);
+		motor[1].setVelocity( value_right);
+	}
+	
 }
 
 //-- Sensor data:
@@ -122,7 +165,32 @@ float Miniskybot::getDistance( int type, int sensor )
 	}
 }
 
-
+//-- Look for the value corresponding to a certain velocity in the table
+short Miniskybot::lookUp( float target)
+{
+	//-- Search index
+	int lower, middle, top;
+	lower = 0;
+	top = NUM_VALUES-1;
+	
+	//--Current value
+	float value;
+	
+	while (lower <= top)
+	{
+		middle = (top+lower)/2;
+		value = VELOCITY_TABLE[middle][0];
+		
+		if ( value == target )
+			return VELOCITY_TABLE[middle][1];
+		else if (value < target )
+			top = middle-1;
+		else if (value > target )
+			lower = middle+1;
+	}
+	
+	return VELOCITY_TABLE[middle][1];
+}
 
 
 

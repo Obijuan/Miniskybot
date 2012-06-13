@@ -49,8 +49,9 @@ class Miniskybot
 
 	//-- Movement control:
 	//-----------------------------------------------------
-	//-- Access individual elements
-	void motorControl( int velocity , int index = -1);
+	//-- Access individual elements (or all if index == -1)
+	void motorControl( short value , int index = -1); //-- Gives a motor the control value [0-255] 
+	void motorVelocity( int velocity, int index = -1); //-- Sets a motor with the velocity suggested
 	
 	//-- Robot control
 	void move( float velocity, float angularVelocity);
@@ -74,8 +75,11 @@ class Miniskybot
 	unsigned short _num_US_sensor;
 	unsigned short _num_IR_sensor;
 
-	//-- Current velocities:
+	//-- Currentp velocities:
 	float _velocity, _angularVelocity;	
+
+	//-- Look for a value corresponding to a velocity in the table
+	short lookUp( float target);
 
 };
 
