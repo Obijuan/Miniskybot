@@ -218,9 +218,15 @@ module Servo_wheel_6_arm_horn()
 
 
 //-- Test!
+
 Servo_wheel_rounded_horn();
 translate([wheel_or_idiam+10,0,0]) Servo_wheel_4_arm_horn();
 translate([-wheel_or_idiam-10,0,0]) Servo_wheel_6_arm_horn();
 
 
+/*-- Horn6. Used in the freecad drawing
+translate([0, 0, 4/2 + 2/2],$fn=50)
+cylinder(r=8.5/2, h=4, center=true);
+horn4(h=2);
+*/
 
