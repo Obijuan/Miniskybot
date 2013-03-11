@@ -2,6 +2,9 @@
 //-- Battery holder for Miniskybot 2. It is based on
 //-- the parameterized batery_holder of Miniskybot 1, but
 //-- with 4 "ears" for screwing to the chassis
+//-- (c) Juan Gonzalez Gomez (Obijuan)
+//---------------------------------------------------------
+//-- Released under the GPL license
 //---------------------------------------------------------
 include <configuration.scad>
 use <Parameterized_battery_holder.scad>
