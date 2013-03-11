@@ -40,7 +40,7 @@ printing_mode = false;
 show_servos = false;
 show_battery = false;
 show_wheels = false;
-show_ultrasound = true;
+show_ultrasound = false;
 
 //-- Rear part body
 module rear_part_body()
@@ -138,7 +138,7 @@ module rear_part()
    translate([-cylrad,rear_c2/2,-cyl_height/2 + (BallSize/2)+top_plate_thickness])
       cube([cylrad/2, cylrad*2+5, BallSize*1.25],center=true);
     
-   translate([-cylrad,rear_c2/2,-cyl_height/2 + (BallSize/2)+top_plate_thickness]) 
+   *translate([-cylrad,rear_c2/2,-cyl_height/2 + (BallSize/2)+top_plate_thickness]) 
       #sphere (BallSize/2+Airgap, $fa=5, $fs=0.1);
 
    translate([-rear_c1-8,rear_c2/2,servo_c3+5])
@@ -445,12 +445,12 @@ module show_robot()
     color("green")
     translate([servo_c5,-servo_c7-wheel_height/2-wheel_gap,servo_c6])
     rotate([90,0,0])
-    Servo_wheel();
+    Servo_wheel_4_arm_horn();
 
     color("green")
     translate([servo_c5,wheel_height/2+2*servo_c3+servo_c7+wheel_gap,servo_c6])
-    rotate([90,0,0])
-    Servo_wheel();
+    rotate([-90,0,0])
+    Servo_wheel_4_arm_horn();
   }
 
   l=4;
@@ -471,6 +471,9 @@ if (printing_mode) {
   miniskybot_frame();
 }
 else {
+  projection(cut=true)  //-- robot projection (for dodcumentation pourposes)
+  translate([0,0, 1])
+  rotate([-90,0,0])
   show_robot();
 }
 

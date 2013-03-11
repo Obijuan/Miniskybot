@@ -11,7 +11,7 @@ nut_radius = 6.6/2;
 
 //------------------------------------------------
 //-- Servo parameters
-//-- See the doc/futaba-doc2.dxf file
+//-- See the doc/futaba-doc.pdf file
 //------------------------------------------------
 //-- Servo futaba 3003 dimensions
 servo_c1 = 20;
@@ -27,7 +27,7 @@ servo_c10 = 9.6;
 
 //-------------------------------------------
 //-- Battery holder parameters
-//-- See the doc/battery_holder.dxf file
+//-- See the doc/battery_holder.pdf file
 //-------------------------------------------
 battery_c1 = 49;
 battery_c2 = 51.5;
@@ -52,12 +52,20 @@ WallThickness = 2.25; //thickness of the retaining wall
 BallSize = 16.4;  //diameter of  your ball bearing.
 Airgap = .65;  // Gap between ball and wall  
 BallProtrude = .35; //percentage of ball radius sticking out 
-WheelDiameter = 56;  //what size wheels you will use.
+//WheelDiameter = 56;  //what size wheels you will use.
 
-//-- Wheels parameters
-wheels_diam = 56;
-wheel_height = 6;
-wheel_gap = 1;
+//-------------------------------------------------
+//-- Wheels parameters. 
+//-- See the doc/wheel-doc.pdf
+//------------------------------------------------
+wheel_or_idiam = 50;                   //-- O-ring inner diameter
+wheel_or_diam = 3;                     //-- O-ring section diameter
+wheel_height = 2*wheel_or_diam+0;     //-- Wheel height: change the 0 for 
+                                      //-- other value (0 equals minimun height)
+                                      
+//-- Wheel diameter is calculated from the o_ring                                      
+wheels_diam = wheel_or_idiam + 2*wheel_or_diam;
+wheel_gap = 1;  //-- For the final view. space between servo and wheel
 
 //-- ultrasounds
 ultrasound_hole = 16.5;

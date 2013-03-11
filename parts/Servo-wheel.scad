@@ -5,12 +5,9 @@
 //-------------------------------------------------------------
 //-- Wheel for mobile robots, drived by Futaba 3003 servos
 //-------------------------------------------------------------
+include <configuration.scad>
 
-//-- Wheel parameters
-wheel_or_idiam = 50;                   //-- O-ring inner diameter
-wheel_or_diam = 3;                     //-- O-ring section diameter
-wheel_height = 2*wheel_or_diam+0;     //-- Wheel height: change the 0 for 
-                                      //-- other value (0 equals minimun height)
+
 //-- Parameters common to all horns
 horn_drill_diam = 1.5;
 horn_height = 6;        //-- Total height: shaft + plate
@@ -51,7 +48,7 @@ a6h_drill_distance = 10.9;
 module raw_wheel(or_idiam=50, or_diam=3, h=6)
 {
    //-- Wheel parameters
-   r = or_idiam/2 + or_diam;   //-- Radius
+   r = wheels_diam / 2;   //-- Radius
 
   //-- Temporal points
   l = or_diam*sqrt(2)/2;
@@ -219,9 +216,17 @@ module Servo_wheel_6_arm_horn()
 
 //-- Test!
 
-Servo_wheel_rounded_horn();
-translate([wheel_or_idiam+10,0,0]) Servo_wheel_4_arm_horn();
-translate([-wheel_or_idiam-10,0,0]) Servo_wheel_6_arm_horn();
+//Servo_wheel_rounded_horn();
+//translate([wheel_or_idiam+10,0,0]) 
+Servo_wheel_4_arm_horn();
+
+//translate([-wheel_or_idiam-10,0,0]) Servo_wheel_6_arm_horn();
+
+
+/*-- Calculating the top view (for the documentation) 
+projection(cut=false)
+Servo_wheel_4_arm_horn();
+*/
 
 
 /*-- Horn6. Used in the freecad drawing
