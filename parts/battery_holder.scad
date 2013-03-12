@@ -57,6 +57,9 @@ module battery()
 }
 
 //-- This is for testing/printing the battery holder
+projection(cut=true)
+translate([0,0,25.5])
+rotate([90,0,0])
 translate([0,0,battery_c3/2])
 battery();
 
