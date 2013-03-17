@@ -52,10 +52,13 @@ wheels_diam = wheel_or_idiam + 2*wheel_or_diam;
 wheel_gap = 1;  //-- For the final view. space between servo and wheel
 
 
-//----------------------------------
-//-- Rear part parameters
-//-- See the doc/rear-doc.dxf file
-//----------------------------------
+//-------------------------------------------------
+//-- Chassis (see doc/chassis-doc.pdf)
+//-------------------------------------------------
+
+robot_height = 47;
+
+//-------- Rear part parameters ------------
 rear_c1 = servo_c2 + 3;
 rear_c2 = servo_c3*2;
 rear_c3 = servo_c1 + battery_height -battery_ear_h;
@@ -66,8 +69,26 @@ WallThickness = 2.25; //thickness of the retaining wall
 BallSize = 16.4;  //diameter of  your ball bearing.
 Airgap = .65;  // Gap between ball and wall  
 BallProtrude = .35; //percentage of ball radius sticking out 
+ball_caster_height = robot_height-(BallSize*BallProtrude);
+
+//-- Front part parameters
+front_c1 = battery_ear_diam + 4;
+front_thickness = 3;
+frame_corner_radius = 3;
 
 
+//-- Top plate
+top_plate_c1 = battery_c1 + front_c1 + rear_c1;
+top_plate_c2 = rear_c2+5;
+top_plate_thickness = 4;
+
+
+//-- Skymega board dimensions
+skymega_lx = 51.4;
+skymega_ly = 51.4;
+skymega_width=3;
+skymega_dx = 15;
+skymega_dy = 15;
 
 //-- ultrasounds
 ultrasound_hole = 16.5;
