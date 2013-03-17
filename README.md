@@ -3,10 +3,20 @@ Miniskybot V2
 
 ![Miniskybot V2 with an skymega board](img/Miniskybot-2-1.jpg "Title")
 
-An open source 3D printable mobile robot (**printbot**)
+An open source 3D printable mobile robot ( **printbot** )
 
 In this repository you can find the Miniskybot 2 or later
+You can find more information (in spanish) in [this page](http://www.iearobotics.com/wiki/index.php?title=Miniskybot_2)
 
+Features
+--------
+* Simplified chassis
+* Marbel as cator wheel (thanks to sliptonic)
+* Battery holder screwed to the chassis
+* Compact and small
+* 3 type of wheels, for the 3 different servo horns
+* Electronics Compatible with [skymega](http://www.thingiverse.com/thing:14197) and [Arduino UNO](http://arduino.cc/en/Main/arduinoBoardUno) boards
+  
 License
 =======
 
