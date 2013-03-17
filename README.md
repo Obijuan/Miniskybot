@@ -1,6 +1,7 @@
 Miniskybot V2
 ===============
 
+![Miniskybot V2 with an skymega board](img/Miniskybot-2-1.jpg "Title")
 
 An open source 3D printable mobile robot (**printbot**)
 
