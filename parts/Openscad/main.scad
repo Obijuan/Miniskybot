@@ -24,7 +24,7 @@ use <fake_ultrasound.scad>
 //--   Printing mode = true for generating the chassis ready to print
 //--   Printing mode = false, for visualizing the Miniskybot robot
 //-----------------------------------------------------------------------
-printing_mode = false;
+printing_mode = true;
 
 //----------------------------------------------------------------
 //-- Visualization flagss
@@ -133,7 +133,7 @@ module rear_part()
    translate([-cylrad,rear_c2/2,-cyl_height/2 + (BallSize/2)+top_plate_thickness])
       cube([cylrad/2, cylrad*2+5, BallSize*1.25],center=true);
     
-   %translate([-cylrad,rear_c2/2,-cyl_height/2 + (BallSize/2)+top_plate_thickness]) 
+   translate([-cylrad,rear_c2/2,-cyl_height/2 + (BallSize/2)+top_plate_thickness]) 
       sphere (BallSize/2+Airgap, $fa=5, $fs=0.1);
 
    translate([-rear_c1-8,rear_c2/2,servo_c3+5])
@@ -364,13 +364,13 @@ module show_robot()
     color([0.2,0.2,0.2])
     translate([servo_c4/2,servo_c3,servo_c1/2])
     rotate([90,0,0])
-    import("futaba3003/futaba.stl");
+    import("../futaba3003/futaba.stl");
 
     //-- Left servo
     color([0.2,0.2,0.2])
     translate([servo_c4/2,servo_c3+0.1,servo_c1/2])
     rotate([-90,0,0])
-    import("futaba3003/futaba.stl");
+    import("../futaba3003/futaba.stl");
   }
 
   //-- Battery holder
