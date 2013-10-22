@@ -1,1 +1,4 @@
-This is the software that can be used to control the Miniskybot robot.
+This is the software that can be used to control the Miniskybot robot
+
+- raw_examples:  Very basic programming examples. They DO NOT use the Miniskybot library
+- Miniskybot_lib: Simple library for controlling the miniskybot robot
